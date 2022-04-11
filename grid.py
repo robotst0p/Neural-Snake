@@ -7,89 +7,42 @@ from input_handler import *
 from snake_class import *
 
 SIZE = 1000, 1000
-BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GRAY = (150, 150, 150)
 WHITE = (255, 255, 255)
 
-key_dict = {K_DOWN: (0, 2), K_UP: (0, -2), K_LEFT: (-2, 0), K_RIGHT: (2, 0)}
-print(key_dict)
+key_dict = {K_DOWN: (0, 10), K_UP: (0, -10), K_LEFT: (-10, 0), K_RIGHT: (10, 0)}
 
 pygame.init()
-screen = pygame.display.set_mode(SIZE)
-
-rect = Rect(0, 0, 10, 10)
-rect = Rect(0, 10, 10, 10)  
+screen = pygame.display.set_mode(SIZE) 
 
 running = True
-setup = False
 
-direction = 'none'
+pygame.display.set_caption("Neural Snake")
 
-snake = []
+key = (0,0)
 
-snake_tile_x = random.randint(0, 1000)
-snake_tile_y = random.randint(0, 1000)
+def randomize():
+    snake_tile_x = random.randint(0, 1000)
+    snake_tile_y = random.randint(0, 1000)
 
-food_tile_x = random.randint(0, 1000)
-food_tile_y = random.randint(0, 1000)
+    food_tile_x = random.randint(0, 1000)
+    food_tile_y = random.randint(0, 1000)
 
-food_tile = Rect(food_tile_x, food_tile_y, 10, 10)
+    snake_head = snake_tile(snake_tile_x, snake_tile_y, 10, 10, (0,0))
+    food_tile = Rect(food_tile_x, food_tile_y, 10, 10)
 
-snake_head = snake_tile(snake_tile_x, snake_tile_y, 10, 10, "")
+    return snake_head, food_tile
 
-input = input("")
+snake_head, food_tile = randomize()
 
-def render(snake_head):
-    pygame.draw.rect(screen, WHITE, snake_head)        
+def border_check(snake_head, food_tile):
+    if snake_head.x >= 1000 or snake_head.y >= 1000 or snake_head.x <= 0 or snake_head.y <= 0:
+        snake_head, food_tile = randomize()
 
-def update(snake_head):
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            snake_head.direction = ""
+    return snake_head, food_tile
 
-    while snake_head.direction == "right":
-        snake_head.left += 1
-        print(snake_head.x)
-        render(snake_head)
-        time.sleep(1)
-        
-    while snake_head.direction == "left":
-        snake_head.x -= 1
-        render(snake_head)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                print("KEY")
-                key = pygame.key.name(event.key)
-                input.direction_update(key)
-                snake_head.direction = input.direction
-                update(snake_head)
-                return
- 
-    while snake_head.direction == "up":
-        snake_head.y -= 1
-        render(snake_head)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                print("KEY")
-                key = pygame.key.name(event.key)
-                input.direction_update(key)
-                snake_head.direction = input.direction
-                update(snake_head)
-                return 
-        
-    while snake_head.direction == "down":
-        snake_head.y += 1
-        render(snake_head)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                print("KEY")
-                key = pygame.key.name(event.key)
-                input.direction_update(key)
-                snake_head.direction = input.direction
-                update(snake_head)
-                return
-pygame.display.set_caption("Neural Snake")        
+
 #render loop
 while running:
     for event in pygame.event.get():
@@ -101,14 +54,13 @@ while running:
     pygame.draw.rect(screen, WHITE, snake_head)
     pygame.display.flip()
 
-    snake_head.direction = ""
-
     if event.type == KEYDOWN:
-        print("KEY")
         key = key_dict[event.key]
-        input.direction_update(key)
         snake_head.direction = key
-        print(snake_head.direction)
-        snake_head = pygame.Rect.move(snake_head.direction)
+    
+    snake_head = snake_head.move(key[0], key[1])
+    snake_head, food_tile = border_check(snake_head, food_tile)
+    time.sleep(.05)
+
 
 pygame.quit()
