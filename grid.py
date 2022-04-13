@@ -41,7 +41,7 @@ def border_check(snake_head, food_tile, snake_body):
         if snake_head.x == tile.x and snake_head.y == tile.y:
             snake_head, food_tile = randomize()
             snake_body = []
-            
+
     if snake_head.x >= 1000 or snake_head.y >= 1000 or snake_head.x <= 0 or snake_head.y <= 0:
         snake_head, food_tile = randomize()
         snake_body = []
@@ -60,27 +60,20 @@ def food_check(snake_head, food_tile, snake_body):
 
         if last_tile.direction == (10, 0):
             new_tile = snake_tile(last_tile.x - 10, last_tile.y, 10, 10, (0,0))
-            snake_body.insert(0,new_tile)
         elif last_tile.direction == (-10, 0):
             new_tile = snake_tile(last_tile.x + 10, last_tile.y, 10, 10, (0,0))
-            snake_body.insert(0, new_tile)
-           
         elif last_tile.direction == (0, 10):
-            new_tile = snake_tile(last_tile.x, last_tile.y - 10, 10, 10, (0,0))
-            snake_body.insert(0, new_tile)
-           
+            new_tile = snake_tile(last_tile.x, last_tile.y - 10, 10, 10, (0,0))     
         elif last_tile.direction == (0, -10):
             new_tile = snake_tile(last_tile.x, last_tile.y + 10, 10, 10, (0,0))
-            snake_body.insert(0, new_tile)
+        snake_body.insert(0, new_tile)
     return snake_body
 
 def dir_update(snake_body, snake_head):
     work_arr = []
-    print(snake_body)
     if len(snake_body) > 0:
         snake_body[-1].direction = snake_head.direction
     for i in range(0, len(snake_body) - 1):
-        print(snake_body[i].direction)
         if snake_body[i + 1].x > snake_body[i].x:
             snake_body[i].direction = (10, 0)
         elif snake_body[i + 1].x < snake_body[i].x:
@@ -89,7 +82,6 @@ def dir_update(snake_body, snake_head):
             snake_body[i].direction = (0, -10)
         elif snake_body[i + 1].y > snake_body[i].y:
             snake_body[i].direction = (0, 10)
-        print(snake_body[i].direction)
         work_arr.append(snake_body[i])
     
     if len(snake_body) > 0:
