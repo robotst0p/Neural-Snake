@@ -1,6 +1,4 @@
-from hashlib import new
 import numpy as np
-import matplotlib.pyplot as plt
 import pygame 
 import random
 
