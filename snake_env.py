@@ -49,7 +49,7 @@ class Environment:
                         self.draw_board()
                         keypress = True
             
-            #if there is no user input, update function takes last dir
+            #if there is no user input, update function takes last direction
             if keypress == False:
                 pygame.time.delay(self.fr)
                 self.update_environment(self.snake_head.get('hed')[2])
