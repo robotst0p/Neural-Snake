@@ -2,7 +2,6 @@ import numpy as np
 import pygame 
 import random
 
-
 class Environment:
     def __init__(self,pygame,width,height,cellsize,fr):
         self.pygame = pygame
