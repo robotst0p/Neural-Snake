@@ -168,6 +168,7 @@ class Environment:
         pygame.display.update() #updates display from new .draw in update function
         pass
    
+    #GROW THE SNAKE 
     def grow_snake(self):
         self.pygame.display.set_caption(f"Score: {self.segments+1}")
         #snake head dict contains head coords, and also current direction
